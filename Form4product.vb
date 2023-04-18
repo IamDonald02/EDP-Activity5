@@ -92,20 +92,25 @@ Public Class Form4product
     End Sub
 
     Private Sub Guna2Button7_Click(sender As Object, e As EventArgs) Handles Export.Click
+        'Create a new instance of the SaveFileDialog class
         Dim backup As New SaveFileDialog
+        'Locate in local drive
         backup.InitialDirectory = "C:\"
         backup.Title = "Database Backup"
         backup.DefaultExt = "sql"
+        'Set file format
         backup.Filter = "sql files (.sql)|.sql|All files (.)|*.*"
         backup.RestoreDirectory = True
 
         If backup.ShowDialog = Windows.Forms.DialogResult.OK Then
+            'Connection to DB
             Call Connect_to_DB()
             Dim mycmd As MySqlCommand = New MySqlCommand
             mycmd.Connection = myconn
             Dim mybu As MySqlBackup = New MySqlBackup(mycmd)
             mybu.ExportToFile(backup.FileName)
             myconn.Close()
+            'Mesagebox
             MessageBox.Show("Database Back-up Successful!")
         ElseIf backup.ShowDialog = Windows.Forms.DialogResult.Cancel Then
             Return
